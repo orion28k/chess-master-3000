@@ -224,6 +224,7 @@ function showResult(result) {
     msg = 'Maia Wins!';
   }
   document.getElementById('result-text').textContent = msg;
+  document.getElementById('stat-moves').textContent = game.history().length;
   document.getElementById('end-overlay').classList.remove('hidden');
   updateStatusText(msg);
 }

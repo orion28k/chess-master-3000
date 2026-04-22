@@ -218,6 +218,36 @@ select {
   color: #e94560;
 }
 
+.stats-grid {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background: #0f3460;
+  border: 1px solid #1a4a7a;
+  border-radius: 10px;
+  padding: 14px 24px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e0e0e0;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
 #new-game-btn {
   background: #e94560;
   color: #fff;
