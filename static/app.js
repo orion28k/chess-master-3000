@@ -265,6 +265,14 @@ document.getElementById('new-game-btn').addEventListener('click', () => {
   showScreen('setup-screen');
 });
 
+document.getElementById('about-btn').addEventListener('click', () => {
+  showScreen('about-screen');
+});
+
+document.getElementById('back-btn').addEventListener('click', () => {
+  showScreen('setup-screen');
+});
+
 document.getElementById('resign-btn').addEventListener('click', () => {
   if (locked) return;
   showResult(playerColor === 'white' ? '0-1' : '1-0');

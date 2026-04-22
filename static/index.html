@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maia Chess</title>
+  <title>Chess Master 3000</title>
   <link rel="stylesheet"
     href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
   <link rel="stylesheet" href="/static/style.css" />
@@ -13,7 +13,7 @@
   <!-- Setup Screen -->
   <div id="setup-screen" class="screen active">
     <div class="setup-card">
-      <h1>Maia Chess</h1>
+      <h1>Chess Master 3000</h1>
       <p class="subtitle">Play against a human-like AI</p>
 
       <label for="elo-select">Difficulty (ELO)</label>
@@ -37,6 +37,27 @@
       </div>
 
       <button id="start-btn">Start Game</button>
+      <button id="about-btn">About</button>
+    </div>
+  </div>
+
+  <!-- About Screen -->
+  <div id="about-screen" class="screen">
+    <div class="setup-card" style="max-width: 480px; width: 100%;">
+      <h1>About</h1>
+      <p class="about-text">
+        <strong>Chess Master 3000</strong> is a chess game built for CSCI 402 that pits players against <strong>Maia</strong>, a neural network trained to play like a real human — not an optimal computer.
+      </p>
+      <p class="about-text">
+        Unlike traditional engines that always find the best move, Maia was trained on millions of real Lichess games and mimics how players at specific ELO ratings actually think, including natural mistakes and tendencies.
+      </p>
+      <p class="about-text">
+        Choose your difficulty from <strong>ELO 1100</strong> (beginner) to <strong>ELO 1900</strong> (advanced), pick your color, and see how you measure up.
+      </p>
+      <p class="about-text" style="color: #888; font-size: 0.85rem;">
+        Powered by the Maia Chess research project · CSCI 402 · Andre Davis &amp; Bradley Hester
+      </p>
+      <button id="back-btn">Back</button>
     </div>
   </div>
 
@@ -97,6 +118,8 @@
       </div>
     </div>
   </div>
+
+  <div id="credits">CSCI 402 | Andre Davis and Bradley Hester</div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://unpkg.com/chess.js@0.10.3/chess.js"></script>

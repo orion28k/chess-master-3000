@@ -5,8 +5,8 @@
 }
 
 body {
-  background: #1a1a2e;
-  color: #e0e0e0;
+  background: #f5f0e8;
+  color: #2c2c2c;
   font-family: 'Segoe UI', system-ui, sans-serif;
   height: 100vh;
   display: flex;
@@ -19,8 +19,8 @@ body {
 
 /* ── Setup ── */
 .setup-card {
-  background: #16213e;
-  border: 1px solid #0f3460;
+  background: #e0dbd0;
+  border: 1px solid #c8c0b0;
   border-radius: 16px;
   padding: 48px 40px;
   width: 380px;
@@ -32,7 +32,7 @@ body {
 h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #e94560;
+  color: #e07820;
   text-align: center;
 }
 
@@ -45,15 +45,15 @@ h1 {
 
 label {
   font-size: 0.85rem;
-  color: #aaa;
+  color: #666;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 select {
-  background: #0f3460;
-  color: #e0e0e0;
-  border: 1px solid #1a4a7a;
+  background: #d0cab8;
+  color: #2c2c2c;
+  border: 1px solid #b8b0a0;
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 1rem;
@@ -70,9 +70,9 @@ select {
 .color-btn {
   flex: 1;
   padding: 10px 0;
-  background: #0f3460;
-  color: #aaa;
-  border: 1px solid #1a4a7a;
+  background: #d0cab8;
+  color: #666;
+  border: 1px solid #b8b0a0;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -80,13 +80,13 @@ select {
 }
 
 .color-btn.active, .color-btn:hover {
-  background: #e94560;
+  background: #e07820;
   color: #fff;
-  border-color: #e94560;
+  border-color: #e07820;
 }
 
 #start-btn {
-  background: #e94560;
+  background: #e07820;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -98,7 +98,43 @@ select {
   margin-top: 4px;
 }
 
-#start-btn:hover { background: #c73652; }
+#start-btn:hover { background: #c06010; }
+
+#about-btn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #c8c0b0;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#about-btn:hover {
+  background: #d0cab8;
+  color: #2c2c2c;
+}
+
+#back-btn {
+  background: #e07820;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#back-btn:hover { background: #c06010; }
+
+.about-text {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.7;
+}
 
 /* ── Game ── */
 .game-layout {
@@ -118,12 +154,12 @@ select {
 
 .player-label {
   font-size: 0.95rem;
-  color: #aaa;
+  color: #666;
   font-weight: 500;
 }
 
 #maia-elo-badge {
-  background: #e94560;
+  background: #e07820;
   color: #fff;
   font-size: 0.75rem;
   padding: 2px 8px;
@@ -140,8 +176,8 @@ select {
 }
 
 #status-bar {
-  background: #16213e;
-  border: 1px solid #0f3460;
+  background: #e0dbd0;
+  border: 1px solid #c8c0b0;
   border-radius: 8px;
   padding: 12px 16px;
   font-size: 0.95rem;
@@ -150,6 +186,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #2c2c2c;
 }
 
 .history-header {
@@ -160,8 +197,8 @@ select {
 }
 
 #move-history {
-  background: #16213e;
-  border: 1px solid #0f3460;
+  background: #e0dbd0;
+  border: 1px solid #c8c0b0;
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 0.9rem;
@@ -170,12 +207,13 @@ select {
   max-height: 320px;
   overflow-y: auto;
   font-family: monospace;
+  color: #2c2c2c;
 }
 
 #resign-btn {
   background: transparent;
   color: #888;
-  border: 1px solid #333;
+  border: 1px solid #c8c0b0;
   border-radius: 8px;
   padding: 10px;
   cursor: pointer;
@@ -184,15 +222,15 @@ select {
 }
 
 #resign-btn:hover {
-  background: #333;
-  color: #e0e0e0;
+  background: #d0cab8;
+  color: #2c2c2c;
 }
 
 /* ── End overlay ── */
 #end-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,8 +240,8 @@ select {
 #end-overlay.hidden { display: none; }
 
 .end-card {
-  background: #16213e;
-  border: 1px solid #0f3460;
+  background: #e0dbd0;
+  border: 1px solid #c8c0b0;
   border-radius: 16px;
   padding: 48px 56px;
   text-align: center;
@@ -215,7 +253,7 @@ select {
 #result-text {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #e94560;
+  color: #e07820;
 }
 
 .stats-grid {
@@ -226,8 +264,8 @@ select {
 }
 
 .stat-box {
-  background: #0f3460;
-  border: 1px solid #1a4a7a;
+  background: #d0cab8;
+  border: 1px solid #b8b0a0;
   border-radius: 10px;
   padding: 14px 24px;
   min-width: 100px;
@@ -237,7 +275,7 @@ select {
 .stat-value {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #e0e0e0;
+  color: #2c2c2c;
 }
 
 .stat-label {
@@ -249,7 +287,7 @@ select {
 }
 
 #new-game-btn {
-  background: #e94560;
+  background: #e07820;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -260,4 +298,14 @@ select {
   transition: background 0.15s;
 }
 
-#new-game-btn:hover { background: #c73652; }
+#new-game-btn:hover { background: #c06010; }
+
+/* ── Credits ── */
+#credits {
+  position: fixed;
+  bottom: 14px;
+  right: 18px;
+  font-size: 0.75rem;
+  color: #999;
+  letter-spacing: 0.03em;
+}
