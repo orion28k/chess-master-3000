@@ -147,7 +147,7 @@ Pending:
   [x] ELO faced         - already known from setup, display on overlay
   [x] Your color        - already known from setup, display on overlay
   [x] Avg position score  - accumulate maia_cp per move response, average in JS, displayed as "Avg Position Score"
-  [ ] Captures          - count moves with 'x' in SAN from game.history()
+  [x] Captures          - count moves with 'x' in SAN from game.history()
   [ ] Checks            - count moves ending in '+' from game.history()
 
 FUTURE FEATURES

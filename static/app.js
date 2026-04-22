@@ -119,9 +119,12 @@ async function onDrop(source, target) {
 
   const state = await res.json();
 
-  // Sync chess.js with server state
-  game.load(state.fen);
-  board.position(state.fen);
+  // Apply Maia's response into chess.js to preserve full move history
+  if (state.maia_move) {
+    const uci = state.maia_move;
+    game.move({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] || undefined });
+  }
+  board.position(game.fen());
 
   if (state.maia_cp !== undefined) maiaCpScores.push(Math.abs(state.maia_cp));
   appendHistory(move.san, state.maia_move ? toSan(state.maia_move, state) : null);
@@ -161,8 +164,11 @@ async function triggerMaiaFirst() {
   if (!res.ok) { locked = false; return; }
 
   const state = await res.json();
-  game.load(state.fen);
-  board.position(state.fen);
+  if (state.maia_move) {
+    const uci = state.maia_move;
+    game.move({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] || undefined });
+  }
+  board.position(game.fen());
 
   if (state.maia_cp !== undefined) maiaCpScores.push(Math.abs(state.maia_cp));
   if (state.maia_move) {
@@ -245,6 +251,8 @@ function showResult(result) {
     ? Math.round(maiaCpScores.reduce((a, b) => a + b, 0) / maiaCpScores.length)
     : 0;
   document.getElementById('stat-confidence').textContent = avgCp;
+  const captures = game.history().filter(m => m.includes('x')).length;
+  document.getElementById('stat-captures').textContent = captures;
   document.getElementById('end-overlay').classList.remove('hidden');
   updateStatusText(msg);
 }
