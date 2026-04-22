@@ -143,7 +143,7 @@ Implemented:
   [x] Total moves       - game.history().length from chess.js (frontend only)
 
 Pending:
-  [ ] Game duration     - JS timer from game start to end
+  [x] Game duration     - JS timer from game start to end, formatted as Xm Xs
   [ ] ELO faced         - already known from setup, display on overlay
   [ ] Your color        - already known from setup, display on overlay
   [ ] Maia avg confidence - accumulate maia_cp per move response, average in JS

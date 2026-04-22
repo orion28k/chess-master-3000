@@ -5,6 +5,7 @@ let playerColor = 'white';
 let selectedElo = 1500;
 let moveCount = 0;
 let locked = false;      // prevent moves while waiting for server
+let gameStartTime = null;
 
 // ── Screen helpers ──────────────────────────────────────────────
 function showScreen(id) {
@@ -42,6 +43,7 @@ async function startGame() {
   sessionId = state.session_id;
   playerColor = state.player_color;
   moveCount = 0;
+  gameStartTime = Date.now();
 
   document.getElementById('maia-elo-badge').textContent = selectedElo;
   document.getElementById('move-history').innerHTML = '';
@@ -211,6 +213,13 @@ function updateStatus(state) {
   updateStatusText(isMyTurn ? 'Your turn' : 'Maia is thinking...');
 }
 
+function formatDuration(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+
 function showResult(result) {
   let msg;
   if (result === '1/2-1/2') {
@@ -225,6 +234,7 @@ function showResult(result) {
   }
   document.getElementById('result-text').textContent = msg;
   document.getElementById('stat-moves').textContent = game.history().length;
+  document.getElementById('stat-duration').textContent = formatDuration(Date.now() - gameStartTime);
   document.getElementById('end-overlay').classList.remove('hidden');
   updateStatusText(msg);
 }
