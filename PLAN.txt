@@ -1,0 +1,134 @@
+MAIA CHESS WEB GAME - IMPLEMENTATION PLAN
+==========================================
+
+GOAL
+----
+Build a web-based chess game where the user plays against Maia Chess (a
+human-like neural network engine). FastAPI backend + browser UI.
+
+USER PREFERENCES
+----------------
+- All 9 ELO levels selectable (1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900)
+- Player chooses color (White / Black / Random) before game starts
+- On game end: show result overlay + New Game button
+
+DIRECTORY STRUCTURE
+-------------------
+~/Desktop/chess-master-3000/
+    main.py          - FastAPI app + all API routes
+    engine.py        - Maia engine wrapper (loads model, manages board state)
+    requirements.txt - fastapi, uvicorn, python-chess
+    static/
+        index.html   - Full game UI (single page)
+        style.css    - Board + page styling
+        app.js       - Game logic, API calls, chessboard.js wiring
+
+FILES
+-----
+
+1. engine.py
+   - MaiaGame class
+   - __init__(elo: int)
+       Calls load_model_config() from:
+       ~/Desktop/maia-chess-master/move_prediction/maia_chess_backend/model_loader.py
+       Using model dir:
+       ~/Desktop/maia-chess-master/move_prediction/model_files/<elo>/
+       Initializes chess.Board()
+   - make_player_move(uci: str) -> dict
+       Validates + pushes player move, checks game over, returns state
+   - get_maia_move() -> dict
+       Calls model.getMoveWithCP(board), pushes result, checks game over
+   - get_state() -> dict
+       Returns FEN, legal moves, turn, is_game_over, result
+   - reset()
+       Reinitializes board
+
+   State dict shape (returned by all methods):
+   {
+     "fen": str,
+     "legal_moves": [str],    # UCI format e.g. "e2e4"
+     "turn": "white" | "black",
+     "is_game_over": bool,
+     "result": str | None     # "1-0", "0-1", "1/2-1/2", or None
+   }
+
+2. main.py
+   - FastAPI app
+   - In-memory sessions dict keyed by session_id (uuid)
+   - Serves static/ folder via StaticFiles mount
+
+   Routes:
+   POST /api/new_game
+       Body: { elo: int, player_color: "white"|"black"|"random" }
+       Creates MaiaGame, stores in sessions, returns session_id + initial state
+       If player_color == "random", picks randomly
+
+   POST /api/move
+       Body: { session_id: str, move: str }  (move in UCI format)
+       Calls make_player_move(), then if not game over calls get_maia_move()
+       Returns updated state
+
+   GET /api/state/{session_id}
+       Returns current board state
+
+   GET /
+       Serves static/index.html
+
+3. static/index.html
+   Single-page app with two screens:
+
+   SETUP SCREEN:
+   - ELO dropdown (1100 to 1900, step 100)
+   - Color selector: White / Black / Random
+   - Start Game button
+
+   GAME SCREEN:
+   - chessboard.js interactive board (drag-and-drop moves)
+   - Move history list (player and Maia moves)
+   - Status bar (whose turn / check / game result)
+
+   END OVERLAY:
+   - Result message (e.g. "You won!", "Maia wins", "Draw")
+   - New Game button (returns to setup screen)
+
+   CDN dependencies (no build step):
+   - chessboard.js  (board rendering + drag/drop)
+   - chess.js       (client-side move validation)
+   - jQuery         (required by chessboard.js)
+
+4. static/style.css
+   - Dark background, centered board
+   - Setup and game screens toggled via CSS class
+   - Clean minimal design
+
+5. static/app.js
+   - On Start: POST /api/new_game, store session_id, render board from FEN
+   - If player is Black: trigger Maia's first move automatically via POST /api/move
+   - On drag-drop: build UCI string, POST /api/move, update board + history
+   - On game over: show overlay with result + New Game button
+   - Move history: append each move to a visible list
+
+6. requirements.txt
+   fastapi
+   uvicorn
+   python-chess
+
+HOW TO RUN
+----------
+  cd ~/Desktop/chess-master-3000
+  pip install -r requirements.txt
+  uvicorn main:app --reload
+
+  Then open: http://localhost:8000
+
+  Requires: lc0 binary installed and available in PATH
+
+VERIFICATION STEPS
+------------------
+1. Open http://localhost:8000
+2. Select ELO 1100, color White -> Start Game
+3. Make a move - board updates, Maia responds
+4. Verify move history populates for both sides
+5. Play to checkmate - confirm result overlay appears
+6. Click New Game - confirm setup screen returns
+7. Repeat test as Black - confirm Maia moves first automatically
