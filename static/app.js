@@ -235,6 +235,8 @@ function showResult(result) {
   document.getElementById('result-text').textContent = msg;
   document.getElementById('stat-moves').textContent = game.history().length;
   document.getElementById('stat-duration').textContent = formatDuration(Date.now() - gameStartTime);
+  document.getElementById('stat-elo').textContent = selectedElo;
+  document.getElementById('stat-color').textContent = playerColor.charAt(0).toUpperCase() + playerColor.slice(1);
   document.getElementById('end-overlay').classList.remove('hidden');
   updateStatusText(msg);
 }

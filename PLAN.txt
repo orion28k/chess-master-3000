@@ -144,8 +144,8 @@ Implemented:
 
 Pending:
   [x] Game duration     - JS timer from game start to end, formatted as Xm Xs
-  [ ] ELO faced         - already known from setup, display on overlay
-  [ ] Your color        - already known from setup, display on overlay
+  [x] ELO faced         - already known from setup, display on overlay
+  [x] Your color        - already known from setup, display on overlay
   [ ] Maia avg confidence - accumulate maia_cp per move response, average in JS
   [ ] Captures          - count moves with 'x' in SAN from game.history()
   [ ] Checks            - count moves ending in '+' from game.history()
