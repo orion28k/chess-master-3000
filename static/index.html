@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maia Chess</title>
+  <link rel="stylesheet"
+    href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- Setup Screen -->
+  <div id="setup-screen" class="screen active">
+    <div class="setup-card">
+      <h1>Maia Chess</h1>
+      <p class="subtitle">Play against a human-like AI</p>
+
+      <label for="elo-select">Difficulty (ELO)</label>
+      <select id="elo-select">
+        <option value="1100">1100 — Beginner</option>
+        <option value="1200">1200</option>
+        <option value="1300">1300</option>
+        <option value="1400">1400</option>
+        <option value="1500" selected>1500 — Intermediate</option>
+        <option value="1600">1600</option>
+        <option value="1700">1700</option>
+        <option value="1800">1800</option>
+        <option value="1900">1900 — Advanced</option>
+      </select>
+
+      <label>Your Color</label>
+      <div class="color-picker">
+        <button class="color-btn active" data-color="white">♔ White</button>
+        <button class="color-btn" data-color="random">⚄ Random</button>
+        <button class="color-btn" data-color="black">♚ Black</button>
+      </div>
+
+      <button id="start-btn">Start Game</button>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <div class="game-layout">
+      <div class="board-area">
+        <div id="maia-label" class="player-label">
+          Maia <span id="maia-elo-badge"></span>
+        </div>
+        <div id="board"></div>
+        <div id="player-label" class="player-label">You</div>
+      </div>
+
+      <div class="sidebar">
+        <div id="status-bar">Your turn</div>
+        <div class="history-header">Move History</div>
+        <div id="move-history"></div>
+        <button id="resign-btn">Resign</button>
+      </div>
+    </div>
+
+    <!-- End Overlay -->
+    <div id="end-overlay" class="hidden">
+      <div class="end-card">
+        <div id="result-text"></div>
+        <button id="new-game-btn">New Game</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://unpkg.com/chess.js@0.10.3/chess.js"></script>
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

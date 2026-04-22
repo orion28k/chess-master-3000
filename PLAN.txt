@@ -5,6 +5,7 @@ GOAL
 ----
 Build a web-based chess game where the user plays against Maia Chess (a
 human-like neural network engine). FastAPI backend + browser UI.
+Fully self-contained — no dependency on the maia-chess-master directory.
 
 USER PREFERENCES
 ----------------
@@ -15,13 +16,22 @@ USER PREFERENCES
 DIRECTORY STRUCTURE
 -------------------
 ~/Desktop/chess-master-3000/
-    main.py          - FastAPI app + all API routes
-    engine.py        - Maia engine wrapper (loads model, manages board state)
-    requirements.txt - fastapi, uvicorn, python-chess
+    main.py              - FastAPI app + all API routes
+    engine.py            - MaiaGame class (loads model, manages board state)
+    requirements.txt     - fastapi, uvicorn, python-chess, pyyaml
+    maia/                - Local copy of engine code (no external deps)
+        __init__.py
+        model_loader.py  - Reads config.yaml, instantiates correct engine class
+        tourney.py       - TourneyEngine base + LC0Engine, RandomEngine, StockfishEngine
+    model_files/         - All 9 pre-trained Maia weight files (copied locally)
+        1100/  (config.yaml + final_1100-40.pb.gz)
+        1200/  (config.yaml + final_1200-40.pb.gz)
+        ...
+        1900/  (config.yaml + final_1900-40.pb.gz)
     static/
-        index.html   - Full game UI (single page)
-        style.css    - Board + page styling
-        app.js       - Game logic, API calls, chessboard.js wiring
+        index.html       - Full game UI (single page)
+        style.css        - Board + page styling
+        app.js           - Game logic, API calls, chessboard.js wiring
 
 FILES
 -----
@@ -29,10 +39,8 @@ FILES
 1. engine.py
    - MaiaGame class
    - __init__(elo: int)
-       Calls load_model_config() from:
-       ~/Desktop/maia-chess-master/move_prediction/maia_chess_backend/model_loader.py
-       Using model dir:
-       ~/Desktop/maia-chess-master/move_prediction/model_files/<elo>/
+       Calls load_model_config() from ./maia/model_loader.py
+       Using local model dir: ./model_files/<elo>/
        Initializes chess.Board()
    - make_player_move(uci: str) -> dict
        Validates + pushes player move, checks game over, returns state
@@ -68,13 +76,27 @@ FILES
        Calls make_player_move(), then if not game over calls get_maia_move()
        Returns updated state
 
+   POST /api/maia_move/{session_id}
+       Triggers Maia to make a move without a preceding player move
+       Used when player is Black and Maia must move first
+
    GET /api/state/{session_id}
        Returns current board state
 
    GET /
        Serves static/index.html
 
-3. static/index.html
+3. maia/tourney.py
+   - Stripped-down copy from maia-chess-master
+   - Removed: pytz, numpy, pandas, datetime, all play*/list* functions
+   - Kept: TourneyEngine, LC0Engine, RandomEngine, StockfishEngine, cpToInt
+
+4. maia/model_loader.py
+   - Reads config.yaml from a model directory
+   - Instantiates LC0Engine, RandomEngine, or StockfishEngine based on config
+   - Returns (model, config) tuple
+
+5. static/index.html
    Single-page app with two screens:
 
    SETUP SCREEN:
@@ -96,32 +118,34 @@ FILES
    - chess.js       (client-side move validation)
    - jQuery         (required by chessboard.js)
 
-4. static/style.css
+6. static/style.css
    - Dark background, centered board
    - Setup and game screens toggled via CSS class
    - Clean minimal design
 
-5. static/app.js
+7. static/app.js
    - On Start: POST /api/new_game, store session_id, render board from FEN
-   - If player is Black: trigger Maia's first move automatically via POST /api/move
+   - If player is Black: POST /api/maia_move/{session_id} to trigger Maia first
    - On drag-drop: build UCI string, POST /api/move, update board + history
    - On game over: show overlay with result + New Game button
    - Move history: append each move to a visible list
 
-6. requirements.txt
+8. requirements.txt
    fastapi
    uvicorn
    python-chess
+   pyyaml
 
 HOW TO RUN
 ----------
   cd ~/Desktop/chess-master-3000
-  pip install -r requirements.txt
+  pip3 install -r requirements.txt
   uvicorn main:app --reload
 
   Then open: http://localhost:8000
 
   Requires: lc0 binary installed and available in PATH
+  Does NOT require maia-chess-master directory
 
 VERIFICATION STEPS
 ------------------
