@@ -251,8 +251,11 @@ function showResult(result) {
     ? Math.round(maiaCpScores.reduce((a, b) => a + b, 0) / maiaCpScores.length)
     : 0;
   document.getElementById('stat-confidence').textContent = avgCp;
-  const captures = game.history().filter(m => m.includes('x')).length;
+  const history = game.history();
+  const captures = history.filter(m => m.includes('x')).length;
+  const checks = history.filter(m => m.includes('+') || m.includes('#')).length;
   document.getElementById('stat-captures').textContent = captures;
+  document.getElementById('stat-checks').textContent = checks;
   document.getElementById('end-overlay').classList.remove('hidden');
   updateStatusText(msg);
 }

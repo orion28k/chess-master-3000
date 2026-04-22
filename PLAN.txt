@@ -148,7 +148,7 @@ Pending:
   [x] Your color        - already known from setup, display on overlay
   [x] Avg position score  - accumulate maia_cp per move response, average in JS, displayed as "Avg Position Score"
   [x] Captures          - count moves with 'x' in SAN from game.history()
-  [ ] Checks            - count moves ending in '+' from game.history()
+  [x] Checks            - count moves with '+' or '#' in SAN from game.history()
 
 FUTURE FEATURES
 ---------------
