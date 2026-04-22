@@ -6,6 +6,7 @@ let selectedElo = 1500;
 let moveCount = 0;
 let locked = false;      // prevent moves while waiting for server
 let gameStartTime = null;
+let maiaCpScores = [];
 
 // ── Screen helpers ──────────────────────────────────────────────
 function showScreen(id) {
@@ -44,6 +45,7 @@ async function startGame() {
   playerColor = state.player_color;
   moveCount = 0;
   gameStartTime = Date.now();
+  maiaCpScores = [];
 
   document.getElementById('maia-elo-badge').textContent = selectedElo;
   document.getElementById('move-history').innerHTML = '';
@@ -121,6 +123,7 @@ async function onDrop(source, target) {
   game.load(state.fen);
   board.position(state.fen);
 
+  if (state.maia_cp !== undefined) maiaCpScores.push(Math.abs(state.maia_cp));
   appendHistory(move.san, state.maia_move ? toSan(state.maia_move, state) : null);
   updateStatus(state);
   locked = false;
@@ -161,6 +164,7 @@ async function triggerMaiaFirst() {
   game.load(state.fen);
   board.position(state.fen);
 
+  if (state.maia_cp !== undefined) maiaCpScores.push(Math.abs(state.maia_cp));
   if (state.maia_move) {
     appendHistory(null, toSan(state.maia_move, state));
   }
@@ -237,6 +241,10 @@ function showResult(result) {
   document.getElementById('stat-duration').textContent = formatDuration(Date.now() - gameStartTime);
   document.getElementById('stat-elo').textContent = selectedElo;
   document.getElementById('stat-color').textContent = playerColor.charAt(0).toUpperCase() + playerColor.slice(1);
+  const avgCp = maiaCpScores.length
+    ? Math.round(maiaCpScores.reduce((a, b) => a + b, 0) / maiaCpScores.length)
+    : 0;
+  document.getElementById('stat-confidence').textContent = avgCp;
   document.getElementById('end-overlay').classList.remove('hidden');
   updateStatusText(msg);
 }
